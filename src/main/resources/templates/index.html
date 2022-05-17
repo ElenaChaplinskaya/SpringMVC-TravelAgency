@@ -5,7 +5,6 @@
     <title>Main page</title>
 </head>
 <body>
-    <a th:href="@{/user/new}">User</a>
-    <a th:href="@{/login}">Login</a>
+<div th:insert="~{fragments/menu :: #nav-menu}"></div>
 </body>
 </html>

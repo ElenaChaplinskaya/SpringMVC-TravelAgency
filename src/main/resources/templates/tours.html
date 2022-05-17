@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Tour list</title>
+
+</head>
+<body>
+<div th:insert="~{fragments/menu :: #nav-menu}"></div>
+
+<table border="1" align="center">
+    <tr>
+        <td>TypeOfTour</td>
+        <td>Country</td>
+        <td>Duration</td>
+        <td>Price</td>
+        <td></td>
+    </tr>
+    <tr th:each="tour : ${tours}">
+        <td th:text="${tour.typeOfTour}">Vacation</td>
+        <td th:text="${tour.country}">Italy</td>
+        <td th:text="${tour.during}">10</td>
+        <td th:text="${tour.price}">100</td>
+        <td><a th:href="@{/tours/{id}/cart(id=${tour.id})}">Add to bucket</a></td>
+    </tr>
+</table>
+
+
+</body>
+</html>
