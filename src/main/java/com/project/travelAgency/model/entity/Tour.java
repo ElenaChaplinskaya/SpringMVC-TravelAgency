@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 public class Tour {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @OneToOne
     @JoinColumn(name="type_of_tour_id")
     private TypeOfTour typeOfTour;

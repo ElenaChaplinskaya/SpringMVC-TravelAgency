@@ -29,7 +29,7 @@ public class TourServiceImpl implements TourService {
     }
 
     @Override
-    public void addToUserCart(Integer tourId, String username) {
+    public void addToUserCart(Long tourId, String username) {
 
         User user = userService.findByName(username);
         if (user == null) {

@@ -32,7 +32,7 @@ public class TourController {
         if (principal == null) {
             return "redirect:/tours";
         }
-        tourService.addToUserCart(id, principal.getName());
+        tourService.addToUserCart(Long.valueOf(id), principal.getName());
         return "redirect:/tours";
     }
 }
