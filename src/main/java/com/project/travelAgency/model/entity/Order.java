@@ -20,7 +20,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @CreationTimestamp
-    private LocalDateTime created;
+    private LocalDateTime created; // надо ли мне это вообще?
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;

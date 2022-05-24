@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+
 public interface UserService extends UserDetailsService { // security
 
-    boolean save(UserDto userDTO);
+    boolean save(UserDto userDTO); //принимает дтошку и сохраняем
 
     void save(User user);
 
