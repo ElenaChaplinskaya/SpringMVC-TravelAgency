@@ -8,7 +8,6 @@ import com.project.travelAgency.model.repository.TourRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.Collections;
 import java.util.List;
 

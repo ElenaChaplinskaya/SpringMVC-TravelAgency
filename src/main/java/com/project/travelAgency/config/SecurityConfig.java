@@ -1,10 +1,12 @@
 package com.project.travelAgency.config;
 
 import com.project.travelAgency.model.entity.Role;
-import com.project.travelAgency.service.UserServiceImpl;
+import com.project.travelAgency.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,41 +16,44 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+
+
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true, jsr250Enabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private  UserServiceImpl userService;
+    private final UserService userService;
 
-    public void setUserService(UserServiceImpl userService) {
-        this.userService = userService;
+
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(myAuthProvider());
     }
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(authenticationProvider());
+
+//    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
 //    }
 
-    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
-    }
-
+    //ПРЕОБРАЗОВАТЕЛЬ ПАРОЛЕЙ. ДЛЯ ХЭШИРОВАНИЯ ПАРОЛЕЙ
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-//    @Basic
-//    private AuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-//        auth.setUserDetailsService(userService);
-//        auth.setPasswordEncoder(passwordEncoder());
-//        return auth;
-//    }
+    @Bean
+    public DaoAuthenticationProvider myAuthProvider() {
+        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+        auth.setPasswordEncoder(passwordEncoder());
+        auth.setUserDetailsService(userService);
+        return auth;
+    }
 
 
+    // метод определяет какой урл нужно защищать, какой не нужно
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()

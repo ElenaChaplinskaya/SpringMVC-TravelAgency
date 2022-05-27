@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException { //ищем пользователя
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException { //ищем пользователя в БД
         User user = userRepository.findFirstByName(username);
         if(user == null){
             throw new UsernameNotFoundException("User not found with name: " + username); // если не нашли пользователя
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
         List<GrantedAuthority> roles = new ArrayList<>(); //если нашли, создаем лист ролей
         roles.add(new SimpleGrantedAuthority(user.getRole().name())); // добавляем роль юзера в лист
 
-        return new org.springframework.security.core.userdetails.User( //получаем спринговского юзера,
+        return new org.springframework.security.core.userdetails.User( //собираем СПРИНГОВСКОГО юзера, ЮЗЕР КОТОРОГО ПОНИМАЕТ USERdETAIL собираем его их данных полученных в бд
                 user.getName(),
                 user.getPassword(),
                 roles);
