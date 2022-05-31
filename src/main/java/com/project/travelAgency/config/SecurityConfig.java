@@ -2,8 +2,8 @@ package com.project.travelAgency.config;
 
 import com.project.travelAgency.model.entity.Role;
 import com.project.travelAgency.service.UserService;
+import com.project.travelAgency.util.PassUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -12,10 +12,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
 
 
 @Configuration
@@ -25,29 +22,17 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
+   // private final PasswordEncoder passwordEncoder;
 
 
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(myAuthProvider());
-    }
-
-
-//    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
-//    }
-
-    //ПРЕОБРАЗОВАТЕЛЬ ПАРОЛЕЙ. ДЛЯ ХЭШИРОВАНИЯ ПАРОЛЕЙ
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService).passwordEncoder(PassUtil.passwordEncoder());
     }
 
     @Bean
     public DaoAuthenticationProvider myAuthProvider() {
         DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-        auth.setPasswordEncoder(passwordEncoder());
+        auth.setPasswordEncoder(PassUtil.passwordEncoder());
         auth.setUserDetailsService(userService);
         return auth;
     }

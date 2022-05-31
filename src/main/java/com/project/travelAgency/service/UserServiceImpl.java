@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean save(UserDto userDto) {
-        if(!Objects.equals(userDto.getPassword(), userDto.getMatchingPassword())) {
+        if (!Objects.equals(userDto.getPassword(), userDto.getMatchingPassword())) {
             throw new RuntimeException("Password is not equal");
         }
         User user = User.builder()
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
     //находим всех пользователей в БД и маппим их в DTO, выводим список.
     @Override
-    public List<UserDto> getAll(){
+    public List<UserDto> getAll() {
         return userRepository.findAll().stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException { //ищем пользователя в БД
         User user = userRepository.findFirstByName(username);
-        if(user == null){
+        if (user == null) {
             throw new UsernameNotFoundException("User not found with name: " + username); // если не нашли пользователя
         }
 
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
     }
 
     //конвертация User из БД в UserDto
-    private UserDto toDto(User user){
+    private UserDto toDto(User user) {
         return UserDto.builder()
                 .username(user.getName())
                 .email(user.getEmail())

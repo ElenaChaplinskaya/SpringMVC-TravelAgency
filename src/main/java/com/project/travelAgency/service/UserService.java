@@ -11,7 +11,7 @@ public interface UserService extends UserDetailsService { // security
 
     boolean save(UserDto userDTO); //принимает дтошку и сохраняем
 
-    void save(User user);
+    void save(User user);// для сохранения юзера к определенно корзине, когда будет добавлять туры в корзину
 
     List<UserDto> getAll();
 

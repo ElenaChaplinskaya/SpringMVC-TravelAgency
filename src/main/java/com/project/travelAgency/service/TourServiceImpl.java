@@ -35,7 +35,7 @@ public class TourServiceImpl implements TourService {
             throw new RuntimeException("User " + username + " not found");
         }
 
-        Cart cart = user.getCart();
+        Cart cart = user.getCart(); // ищем корзину у юзера
         if (cart == null) {
             Cart newCart = cartService.createCart(user, Collections.singletonList(tourId));
             user.setCart(newCart);

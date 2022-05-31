@@ -2,7 +2,6 @@ package com.project.travelAgency.service;
 
 import com.project.travelAgency.model.dto.CartDetailDto;
 import com.project.travelAgency.model.dto.CartDto;
-import com.project.travelAgency.model.dto.TourDto;
 import com.project.travelAgency.model.entity.Cart;
 import com.project.travelAgency.model.entity.Tour;
 import com.project.travelAgency.model.entity.User;
@@ -32,7 +31,7 @@ public class CartServiceImpl implements CartService {
         Cart cart = new Cart(); //создает новую корзину
         cart.setUser(user); // сеттим юзера в корзину
         List<Tour> tourList = getCollectRefToursByIds(tourIds); //у нас есть список туров, который лежит в определенной корзине определенного пользователя
-
+        cart.setTours(tourList);
         return cartRepository.save(cart);
     }
 
