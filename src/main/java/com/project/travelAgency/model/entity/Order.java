@@ -1,15 +1,12 @@
 package com.project.travelAgency.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -18,11 +15,19 @@ import java.time.LocalDateTime;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    @CreationTimestamp
-    private LocalDateTime created; // надо ли мне это вообще?
+    private Long id;
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
+    @ManyToMany
+    @JoinTable(name = "order_tour",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "tour_id"))
+    private List<Tour> tours;
 
+    public void removeTour(Tour tempTour) {
+        tours.remove(tempTour);
+        tempTour.getOrders().remove(this);
+
+    }
 }

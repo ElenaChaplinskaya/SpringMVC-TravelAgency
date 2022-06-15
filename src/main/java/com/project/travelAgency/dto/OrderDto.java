@@ -1,4 +1,4 @@
-package com.project.travelAgency.model.dto;
+package com.project.travelAgency.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,16 +12,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CartDto {
+public class OrderDto {
 
     private  int amountTours;
     private Double sum;
-    private List<CartDetailDto> cartDetails = new ArrayList<>();
+    private List<OrderDetailDto> orderDetails = new ArrayList<>();
 
     public void aggregate(){
-        this.amountTours = cartDetails.size();
-        this.sum = cartDetails.stream()
-                .map(CartDetailDto::getSum)
+        this.amountTours = orderDetails.size();
+        this.sum = orderDetails.stream()
+                .map(OrderDetailDto::getSum)
                 .mapToDouble(Double::doubleValue)
                 .sum();
     }

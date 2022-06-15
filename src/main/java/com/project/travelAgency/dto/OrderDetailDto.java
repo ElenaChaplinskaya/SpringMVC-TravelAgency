@@ -1,7 +1,6 @@
-package com.project.travelAgency.model.dto;
+package com.project.travelAgency.dto;
 
 import com.project.travelAgency.model.entity.Country;
-import com.project.travelAgency.model.entity.During;
 import com.project.travelAgency.model.entity.Tour;
 import com.project.travelAgency.model.entity.TypeOfTour;
 import lombok.AllArgsConstructor;
@@ -15,18 +14,18 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CartDetailDto {
+public class OrderDetailDto {
     private TypeOfTour typeOfTour;
     private Country country;
-    private During during;
+    private Integer days;
     private BigDecimal price;
     private BigDecimal amount;
     private Double sum;
 
-    public CartDetailDto(Tour tour) {
+    public OrderDetailDto(Tour tour) {
         this.typeOfTour = tour.getTypeOfTour();
         this.country = tour.getCountry();
-        this.during = tour.getDuring();
+        this.days = tour.getDays();
         this.price = tour.getPrice();
         this.amount = new BigDecimal(1.0);
         this.sum = Double.valueOf(tour.getPrice().toString());

@@ -1,4 +1,4 @@
-package com.project.travelAgency.model.dto;
+package com.project.travelAgency.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

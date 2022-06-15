@@ -1,6 +1,6 @@
 package com.project.travelAgency.service;
 
-import com.project.travelAgency.model.dto.UserDto;
+import com.project.travelAgency.dto.UserDto;
 import com.project.travelAgency.model.entity.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 

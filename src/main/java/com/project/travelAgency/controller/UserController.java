@@ -1,6 +1,6 @@
 package com.project.travelAgency.controller;
 
-import com.project.travelAgency.model.dto.UserDto;
+import com.project.travelAgency.dto.UserDto;
 import com.project.travelAgency.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

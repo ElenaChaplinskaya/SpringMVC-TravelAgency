@@ -12,19 +12,24 @@
     <tr>
         <td>TypeOfTour</td>
         <td>Country</td>
+        <td>City</td>
         <td>Duration</td>
         <td>Price</td>
-        <td></td>
+        <td>Status</td>
+        <td>Add</td>
+        <td>Remove</td>
     </tr>
     <tr th:each="tour : ${tours}">
-        <td th:text="${tour.typeOfTour}">Vacation</td>
-        <td th:text="${tour.country}">Italy</td>
-        <td th:text="${tour.during}">10</td>
+        <td th:text="${tour.typeOfTourDto.title}">Vacation</td>
+        <td th:text="${tour.countryDto.country}">Italy</td>
+        <td th:text="${tour.countryDto.city}">Milan</td>
+        <td th:text="${tour.days}">10</td>
         <td th:text="${tour.price}">100</td>
-        <td><a th:href="@{/tours/{id}/cart(id=${tour.id})}">Add to cart</a></td>
+        <td th:text="${tour.status}">Горящий</td>
+        <td><a th:href="@{/tours/{id}/order(id=${tour.id})}">Add to order</a></td>
+        <td><a href="#">Remove</a></td>
     </tr>
 </table>
-
-
+<td sec:authorize="hasAnyAuthority('ADMIN')"><a th:href="@{/tours/showCreateTour}">Create Tour</a></td>
 </body>
 </html>

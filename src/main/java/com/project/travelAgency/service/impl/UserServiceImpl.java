@@ -1,10 +1,11 @@
-package com.project.travelAgency.service;
+package com.project.travelAgency.service.impl;
 
 
-import com.project.travelAgency.model.dto.UserDto;
+import com.project.travelAgency.dto.UserDto;
 import com.project.travelAgency.model.entity.Role;
 import com.project.travelAgency.model.entity.User;
 import com.project.travelAgency.model.repository.UserRepository;
+import com.project.travelAgency.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

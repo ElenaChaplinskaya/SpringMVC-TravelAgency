@@ -6,8 +6,9 @@
 </head>
 <body>
 <div th:insert="~{fragments/menu :: #nav-menu}"></div>
+<input type="hidden" name="tourId" value="${tour.id}">
 <h2>My cart</h2>
-<h3>All sum -> <b th:text="${cart.sum}">1000</b></h3>
+<h3>All sum -> <b th:text="${order.sum}">1000</b></h3>
 
 <table border="1" align="center">
     <tr>
@@ -19,18 +20,20 @@
         <td>Sum</td>
         <td></td>
     </tr>
-    <tr th:each="detail : ${cart.cartDetails}">
+    <tr th:each="detail : ${order.orderDetails}">
         <td th:text="${detail.typeOfTour}">Vacation</td>
         <td th:text="${detail.country}">Italy</td>
-        <td th:text="${detail.during}">7</td>
+        <td th:text="${detail.days}">7</td>
         <td th:text="${detail.price}">100</td>
         <td th:text="${detail.amount}">1</td>
         <td th:text="${detail.sum}">100</td>
-        <td><a href="#">Remove</a></td>
+        <td>
+            <a th:href="@{/deleteTour(tourId=${tour.getId()}, cardId=${card.getId()})}">Remove</a>
+        </td>
     </tr>
 </table>
 
-<form th:action="@{/cart}" method="post">
+<form th:action="@{/order}" method="post">
     <button type="submit">Create Order</button>
 </form>
 

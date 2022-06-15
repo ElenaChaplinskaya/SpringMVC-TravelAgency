@@ -22,7 +22,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
-   // private final PasswordEncoder passwordEncoder;
 
 
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -42,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/users").hasAnyAuthority(Role.ADMIN.name())// просматривать пользователй могут только пользователи с правами ADMIN
+                .antMatchers("/users","/tours/showCreateTour").hasAnyAuthority(Role.ADMIN.name())// просматривать пользователй могут только пользователи с правами ADMIN
                 .antMatchers("/users/new").hasAuthority(Role.ADMIN.name()) //создавать пользователя могут только пользователи с правами ADMIN
                 .anyRequest().permitAll() //остальные запросы для всех
                 .and()
