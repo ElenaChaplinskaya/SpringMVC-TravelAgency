@@ -13,7 +13,8 @@ public interface TourService {
 
     void addToUserOrder(Long tourId, String username);// добавляем тур по id к определенному user
 
-    Tour findById(long id);
+    Tour getById(long id);
 
     Tour save(TourDto tourDto, TypeOfTourDto typeOfTourDto, CountryDto countryDto);
+
 }

@@ -52,8 +52,8 @@ public class TourServiceImpl implements TourService {
     }
 
     @Override
-    public Tour findById(long id) {
-        return tourRepository.findById(id).get();
+    public Tour getById(long id) {
+        return tourRepository.getById(id);
     }
 
     @Override
@@ -67,14 +67,7 @@ public class TourServiceImpl implements TourService {
                 .price(tourDto.getPrice())
                 .status(tourDto.getStatus())
                 .build();
-//
-//        Tour tour = Tour.builder()
-//                .typeOfTour(tourDto.getTypeOfTourDto())
-//                .country(tourDto.getCountry())
-//                .days(tourDto.getDays())
-//                .price(tourDto.getPrice())
-//                .status(tourDto.getStatus())
-//                .build();
+
         tourRepository.save(tour);
         return tour;
     }

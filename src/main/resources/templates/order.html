@@ -6,7 +6,7 @@
 </head>
 <body>
 <div th:insert="~{fragments/menu :: #nav-menu}"></div>
-<input type="hidden" name="tourId" value="${tour.id}">
+<!--<input type="hidden" name="tourId" value="${tour.id}">-->
 <h2>My cart</h2>
 <h3>All sum -> <b th:text="${order.sum}">1000</b></h3>
 
@@ -27,9 +27,9 @@
         <td th:text="${detail.price}">100</td>
         <td th:text="${detail.amount}">1</td>
         <td th:text="${detail.sum}">100</td>
-        <td>
-            <a th:href="@{/deleteTour(tourId=${tour.getId()}, cardId=${card.getId()})}">Remove</a>
-        </td>
+<!--        <td>-->
+<!--            <a th:href="@{/deleteTour(tourId=${tour.getId()}, cardId=${card.getId()})}">Remove</a>-->
+<!--        </td>-->
     </tr>
 </table>
 

@@ -3,6 +3,8 @@ package com.project.travelAgency.controller;
 import com.project.travelAgency.dto.CountryDto;
 import com.project.travelAgency.dto.TourDto;
 import com.project.travelAgency.dto.TypeOfTourDto;
+import com.project.travelAgency.model.entity.Tour;
+import com.project.travelAgency.model.repository.TourRepository;
 import com.project.travelAgency.service.impl.TourServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,7 @@ import java.util.List;
 public class TourController {
 
     private final TourServiceImpl tourService;
+    private final TourRepository tourRepository;
 
 
     @GetMapping
@@ -28,7 +31,6 @@ public class TourController {
         return "tours";
     }
 
-    //добавляем туры в заказ
     @GetMapping("/{id}/order")
     public String addOrder(@PathVariable Long id, Principal principal) {
         if (principal == null) {
@@ -62,5 +64,30 @@ public class TourController {
         return "tours";
     }
 
+    @GetMapping("/{id}/deleteTour")
+    public String deleteTour(@PathVariable Long id, Model model) {
 
+        tourRepository.deleteById(id);
+        List<TourDto> list = tourService.getAll();
+        List<TourDto> newList = tourService.getAll();
+        model.addAttribute("tours", newList);
+        return "tours";
+    }
+
+    @GetMapping("/{id}")
+    public String editTour(@PathVariable Long id, Model model){
+        List<TourDto> list = tourService.getAll();
+        Tour tour = tourService.getById(id);
+
+        model.addAttribute("editTour",tour);
+        return "editTour";
+
+    }
+
+    @PostMapping("/editTour")
+    public String editTour(@RequestParam Long id, @ModelAttribute Tour tour){
+
+        return "tours";
+
+    }
 }

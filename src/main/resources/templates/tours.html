@@ -17,7 +17,8 @@
         <td>Price</td>
         <td>Status</td>
         <td>Add</td>
-        <td>Remove</td>
+        <td sec:authorize="hasAnyAuthority('ADMIN')">Remove</td>
+        <td sec:authorize="hasAnyAuthority('ADMIN')">Edit tour</td>
     </tr>
     <tr th:each="tour : ${tours}">
         <td th:text="${tour.typeOfTourDto.title}">Vacation</td>
@@ -27,9 +28,11 @@
         <td th:text="${tour.price}">100</td>
         <td th:text="${tour.status}">Горящий</td>
         <td><a th:href="@{/tours/{id}/order(id=${tour.id})}">Add to order</a></td>
-        <td><a href="#">Remove</a></td>
+        <td sec:authorize="hasAnyAuthority('ADMIN')"><a th:href="@{/tours/{id}/deleteTour(id=${tour.id})}">Remove</a></td>
+        <td sec:authorize="hasAnyAuthority('ADMIN')"><a th:href="@{/tours/{id}(id=${tour.id})}">Edit Tour</a></td>
     </tr>
 </table>
 <td sec:authorize="hasAnyAuthority('ADMIN')"><a th:href="@{/tours/showCreateTour}">Create Tour</a></td>
+
 </body>
 </html>
