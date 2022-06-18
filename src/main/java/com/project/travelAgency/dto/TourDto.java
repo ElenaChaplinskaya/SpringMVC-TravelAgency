@@ -1,12 +1,12 @@
 package com.project.travelAgency.dto;
 
 
-import com.project.travelAgency.model.entity.Country;
 import com.project.travelAgency.model.entity.Status;
 import com.project.travelAgency.model.entity.Tour;
-import com.project.travelAgency.model.entity.TypeOfTour;
-import lombok.*;
-import org.springframework.integration.annotation.Default;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 

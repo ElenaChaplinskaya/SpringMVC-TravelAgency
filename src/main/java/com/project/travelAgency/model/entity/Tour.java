@@ -17,10 +17,12 @@ public class Tour {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne (cascade=CascadeType.ALL)
-    @JoinColumn(name="type_of_tour_id")
-    private TypeOfTour typeOfTour;
-    @OneToOne (cascade=CascadeType.ALL)
+    @Enumerated(EnumType.STRING)
+    private Type type;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name="type_of_tour_id")
+//    private TypeOfTour typeOfTour;
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="country_id")
     private Country country;
     @Column
@@ -29,7 +31,7 @@ public class Tour {
     private BigDecimal price;
     @Enumerated(EnumType.STRING)
     private Status status;
-    @ManyToMany(mappedBy = "tours")
-    private List<Order> orders;
+    @ManyToMany(mappedBy = "tours", cascade=CascadeType.ALL)
+    private List<Cart> carts;
 
 }

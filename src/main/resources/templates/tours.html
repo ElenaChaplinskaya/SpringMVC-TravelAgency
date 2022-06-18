@@ -27,7 +27,7 @@
         <td th:text="${tour.days}">10</td>
         <td th:text="${tour.price}">100</td>
         <td th:text="${tour.status}">Горящий</td>
-        <td><a th:href="@{/tours/{id}/order(id=${tour.id})}">Add to order</a></td>
+        <td><a th:href="@{/tours/{id}/cart(id=${tour.id})}">Add to cart</a></td>
         <td sec:authorize="hasAnyAuthority('ADMIN')"><a th:href="@{/tours/{id}/deleteTour(id=${tour.id})}">Remove</a></td>
         <td sec:authorize="hasAnyAuthority('ADMIN')"><a th:href="@{/tours/{id}(id=${tour.id})}">Edit Tour</a></td>
     </tr>

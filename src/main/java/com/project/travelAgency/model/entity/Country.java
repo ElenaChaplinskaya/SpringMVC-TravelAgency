@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Builder
@@ -23,6 +24,8 @@ public class Country {
     private String country;
     @Column
     private String city;
+    @OneToMany(mappedBy = "country")
+    private List<Tour> tours;
 
     public Country(CountryDto countryDto) {
         this.country = countryDto.getCountry();

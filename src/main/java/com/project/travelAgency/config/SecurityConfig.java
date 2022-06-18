@@ -41,20 +41,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/users","/tours/showCreateTour").hasAnyAuthority(Role.ADMIN.name())// просматривать пользователй могут только пользователи с правами ADMIN
-                .antMatchers("/users/new","/deleteTour").hasAuthority(Role.ADMIN.name()) //создавать пользователя могут только пользователи с правами ADMIN
+                .antMatchers("/users", "/tours/showCreateTour").hasAnyAuthority(Role.ADMIN.name())// просматривать пользователй могут только пользователи с правами ADMIN
+                .antMatchers("/users/new", "/deleteTour", "/editTour").hasAuthority(Role.ADMIN.name()) //создавать пользователя могут только пользователи с правами ADMIN
                 .anyRequest().permitAll() //остальные запросы для всех
                 .and()
-                    .formLogin()// страницы логина и аутинтификации разрешены
-                    .loginPage("/login")
-                    .loginProcessingUrl("/auth")
-                    .failureUrl("/login-error")
-                    .permitAll() //для всех
+                .formLogin()// страницы логина и аутинтификации разрешены
+                .loginPage("/login")
+                .loginProcessingUrl("/auth")
+                .failureUrl("/login-error")
+                .permitAll() //для всех
                 .and()
-                    .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")) //разъединение
-                    .logoutSuccessUrl("/").deleteCookies("JSESSIONID") // если успешно, переходим в корень и удаляем куки
-                    .invalidateHttpSession(true)
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")) //разъединение
+                .logoutSuccessUrl("/").deleteCookies("JSESSIONID") // если успешно, переходим в корень и удаляем куки
+                .invalidateHttpSession(true)
                 .and()
-                    .csrf().disable();
+                .csrf().disable();
     }
 }

@@ -1,14 +1,15 @@
 package com.project.travelAgency.model.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
 @Table
@@ -19,15 +20,5 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @ManyToMany
-    @JoinTable(name = "order_tour",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "tour_id"))
-    private List<Tour> tours;
 
-    public void removeTour(Tour tempTour) {
-        tours.remove(tempTour);
-        tempTour.getOrders().remove(this);
-
-    }
 }

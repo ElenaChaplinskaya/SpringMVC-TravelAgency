@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -27,9 +26,8 @@ public class User {
     private String email;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE) //когда удаляем пользователя, удаляется его корзина
-    private List<Order> orders;
-    @Transient
-    private Order order;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE) //когда удаляем пользователя, удаляется его корзина
+    private Cart cart;
+
 
 }

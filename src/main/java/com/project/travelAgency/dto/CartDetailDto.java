@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderDetailDto {
+public class CartDetailDto {
     private TypeOfTour typeOfTour;
     private Country country;
     private Integer days;
@@ -22,7 +22,7 @@ public class OrderDetailDto {
     private BigDecimal amount;
     private Double sum;
 
-    public OrderDetailDto(Tour tour) {
+    public CartDetailDto(Tour tour) {
         this.typeOfTour = tour.getTypeOfTour();
         this.country = tour.getCountry();
         this.days = tour.getDays();

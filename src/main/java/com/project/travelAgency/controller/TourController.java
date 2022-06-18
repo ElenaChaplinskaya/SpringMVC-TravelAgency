@@ -3,8 +3,12 @@ package com.project.travelAgency.controller;
 import com.project.travelAgency.dto.CountryDto;
 import com.project.travelAgency.dto.TourDto;
 import com.project.travelAgency.dto.TypeOfTourDto;
+import com.project.travelAgency.model.entity.Country;
+import com.project.travelAgency.model.entity.Status;
 import com.project.travelAgency.model.entity.Tour;
+import com.project.travelAgency.model.entity.TypeOfTour;
 import com.project.travelAgency.model.repository.TourRepository;
+import com.project.travelAgency.service.TypeOfTourService;
 import com.project.travelAgency.service.impl.TourServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -23,6 +27,8 @@ public class TourController {
     private final TourServiceImpl tourService;
     private final TourRepository tourRepository;
 
+    private final TypeOfTourService typeOfTourService;
+
 
     @GetMapping
     public String list(Model model) {
@@ -31,12 +37,12 @@ public class TourController {
         return "tours";
     }
 
-    @GetMapping("/{id}/order")
-    public String addOrder(@PathVariable Long id, Principal principal) {
+    @GetMapping("/{id}/cart")
+    public String addCart(@PathVariable Long id, Principal principal) {
         if (principal == null) {
             return "redirect:/tours";
         }
-        tourService.addToUserOrder(id, principal.getName());
+        tourService.addToUserCart(id, principal.getName());
         return "redirect:/tours";
     }
 
@@ -75,19 +81,20 @@ public class TourController {
     }
 
     @GetMapping("/{id}")
-    public String editTour(@PathVariable Long id, Model model){
-        List<TourDto> list = tourService.getAll();
-        Tour tour = tourService.getById(id);
+    public String editTour(@PathVariable Long id, Model model) {
 
-        model.addAttribute("editTour",tour);
+        model.addAttribute("tour", tourService.getById(id));
         return "editTour";
 
     }
 
     @PostMapping("/editTour")
-    public String editTour(@RequestParam Long id, @ModelAttribute Tour tour){
-
+    public String editTour(@ModelAttribute Tour tour, @ModelAttribute TypeOfTour typeOfTour, @ModelAttribute Country country, Model model) {
+        model.addAttribute("typeOfTour", new TypeOfTour());
+        model.addAttribute("country", new Country());
+        tourRepository.save(tour);
+        List<TourDto> list = tourService.getAll();
+        model.addAttribute("tours", list);
         return "tours";
-
     }
 }

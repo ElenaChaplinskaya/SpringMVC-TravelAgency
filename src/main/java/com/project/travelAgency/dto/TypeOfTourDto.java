@@ -12,9 +12,11 @@ import lombok.NoArgsConstructor;
 @Builder
 public class TypeOfTourDto {
 
+    private Integer id;
     private String title;
 
     public TypeOfTourDto(TypeOfTour typeOfTour) {
+        this.id =typeOfTour.getId();
         this.title = typeOfTour.getTitle();
     }
 }

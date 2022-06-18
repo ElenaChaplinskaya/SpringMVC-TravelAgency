@@ -12,16 +12,18 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderDto {
+public class CartDto {
+
+    private Long id;
 
     private  int amountTours;
     private Double sum;
-    private List<OrderDetailDto> orderDetails = new ArrayList<>();
+    private List<CartDetailDto> cartDetails = new ArrayList<>();
 
     public void aggregate(){
-        this.amountTours = orderDetails.size();
-        this.sum = orderDetails.stream()
-                .map(OrderDetailDto::getSum)
+        this.amountTours = cartDetails.size();
+        this.sum = cartDetails.stream()
+                .map(CartDetailDto::getSum)
                 .mapToDouble(Double::doubleValue)
                 .sum();
     }

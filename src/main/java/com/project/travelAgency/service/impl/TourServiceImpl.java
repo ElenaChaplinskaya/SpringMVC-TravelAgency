@@ -6,7 +6,7 @@ import com.project.travelAgency.dto.TypeOfTourDto;
 import com.project.travelAgency.model.entity.*;
 import com.project.travelAgency.model.mapper.TourMapper;
 import com.project.travelAgency.model.repository.TourRepository;
-import com.project.travelAgency.service.OrderService;
+import com.project.travelAgency.service.CartService;
 import com.project.travelAgency.service.TourService;
 import com.project.travelAgency.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,41 +24,41 @@ public class TourServiceImpl implements TourService {
     private final TourMapper mapper = TourMapper.MAPPER;
     private final TourRepository tourRepository;
     private final UserService userService;
-    private final OrderService orderService;
+    private final CartService cartService;
 
 
     @Override
     public List<TourDto> getAll() {
-      return   tourRepository.findAll().stream()
-              .map(TourDto::new)
-              .collect(Collectors.toList());
+        return tourRepository.findAll().stream()
+                .map(TourDto::new)
+                .collect(Collectors.toList());
 //        return mapper.fromTourList(tourRepository.findAll()); // косяк с мапперами
     }
 
     @Override
-    public void addToUserOrder(Long tourId, String username) {
+    public void addToUserCart(Long tourId, String username) {
         User user = userService.findByName(username);
         if (user == null) {
             throw new RuntimeException("User " + username + " not found");
         }
-        Order order = user.getOrder(); // ищем заказ у юзера
-        if (order == null) {
-            Order newOrder = orderService.createOrder(user, Collections.singletonList(tourId));
-            user.setOrder(newOrder);
+        Cart cart = user.getCart(); // ищем заказ у юзера
+        if (cart == null) {
+            Cart newCart = cartService.createCart(user, Collections.singletonList(tourId));
+            user.setCart(newCart);
             userService.save(user);
         } else {
-            orderService.addTours(order, Collections.singletonList(tourId));
+            cartService.addTours(cart, Collections.singletonList(tourId));
         }
     }
 
     @Override
     public Tour getById(long id) {
+
         return tourRepository.getById(id);
     }
 
     @Override
     public Tour save(TourDto tourDto, TypeOfTourDto typeOfTourDto, CountryDto countryDto) {
-
 
         Tour tour = Tour.builder()
                 .typeOfTour(new TypeOfTour(typeOfTourDto))
