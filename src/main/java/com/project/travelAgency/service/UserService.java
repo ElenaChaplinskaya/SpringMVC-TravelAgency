@@ -17,7 +17,7 @@ public interface UserService extends UserDetailsService {
 
     User findByName(String name);
 
-    User getDiscount (String name);
+    User getDiscount(String name);
 
 
 }

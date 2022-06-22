@@ -25,7 +25,7 @@ public class OrderDetails {
     private BigDecimal amount;
     private BigDecimal price;
 
-    public OrderDetails(Order order, Tour tour, Long amount,Long price) {
+    public OrderDetails(Order order, Tour tour, Long amount, Long price) {
         this.order = order;
         this.tour = tour;
         this.amount = new BigDecimal(amount);

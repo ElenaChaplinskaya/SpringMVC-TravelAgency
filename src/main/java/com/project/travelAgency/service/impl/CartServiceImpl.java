@@ -123,7 +123,6 @@ public class CartServiceImpl implements CartService {
             return;
         }
 
-
         Order order = new Order();
         order.setStatus(OrderStatus.NEW);
         order.setUser(user);

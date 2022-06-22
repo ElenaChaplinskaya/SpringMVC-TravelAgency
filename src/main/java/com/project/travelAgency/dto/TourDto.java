@@ -1,6 +1,5 @@
 package com.project.travelAgency.dto;
 
-
 import com.project.travelAgency.model.entity.Status;
 import com.project.travelAgency.model.entity.Tour;
 import com.project.travelAgency.model.entity.TypeOfTour;

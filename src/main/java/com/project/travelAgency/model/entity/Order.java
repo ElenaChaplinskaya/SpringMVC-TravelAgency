@@ -27,7 +27,7 @@ public class Order {
     @Column
     @CreationTimestamp
     private LocalDateTime created;
-    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderDetails> details;
     @Enumerated(EnumType.STRING)
     private OrderStatus status;

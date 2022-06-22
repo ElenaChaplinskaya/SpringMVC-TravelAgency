@@ -23,23 +23,21 @@ public class PaymentController {
     private final OrderService orderService;
 
     @GetMapping
-    public String makeAPayment(Model model){
+    public String makeAPayment(Model model) {
 
         return "payment";
     }
 
     @PostMapping
-    public String makeAPayment(Principal principal){
+    public String makeAPayment(Principal principal) {
 
-        List<Order>orders = orderRepository.findLastByUserName(principal.getName());
-        for (Order order:orders) {
-            if (order.getStatus()==OrderStatus.NEW) {
+        List<Order> orders = orderRepository.findAllByUserName(principal.getName());
+        for (Order order : orders) {
+            if (order.getStatus() == OrderStatus.NEW) {
                 order.setStatus(OrderStatus.PAID);
                 orderService.saveOrder(order);
             }
         }
-
-        return"redirect:/order";
+        return "redirect:/order";
     }
-
 }

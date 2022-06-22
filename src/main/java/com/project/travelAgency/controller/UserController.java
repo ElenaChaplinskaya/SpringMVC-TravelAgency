@@ -1,7 +1,6 @@
 package com.project.travelAgency.controller;
 
 import com.project.travelAgency.dto.UserDto;
-import com.project.travelAgency.model.entity.User;
 import com.project.travelAgency.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,7 +17,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public String userList(Model model){
+    public String userList(Model model) {
         model.addAttribute("users", userService.getAll());
         return "userList";
     }
@@ -30,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping("/new")
-    public String saveUser(UserDto userDto, Model model){
+    public String saveUser(UserDto userDto, Model model) {
         if (userService.save(userDto)) {
             return "redirect:/users";
         } else {

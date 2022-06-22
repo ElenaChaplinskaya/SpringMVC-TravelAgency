@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +82,7 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-      return   userRepository.save(user);
+        return userRepository.save(user);
     }
 
     @Override

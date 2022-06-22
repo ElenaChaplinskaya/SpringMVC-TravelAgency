@@ -15,11 +15,11 @@ import java.util.List;
 public class CartDto {
 
     private Long id;
-    private  int amountTours;
+    private int amountTours;
     private Double sum;
     private List<CartDetailDto> cartDetails = new ArrayList<>();
 
-    public void aggregate(){
+    public void aggregate() {
         this.amountTours = cartDetails.size();
         this.sum = cartDetails.stream()
                 .map(CartDetailDto::getSum)

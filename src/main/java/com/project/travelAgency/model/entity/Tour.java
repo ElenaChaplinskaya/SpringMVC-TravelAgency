@@ -20,7 +20,7 @@ public class Tour {
     @Enumerated(EnumType.STRING)
     private TypeOfTour typeOfTour;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="country_id")
+    @JoinColumn(name = "country_id")
     private Country country;
     @Column
     private int days;
@@ -28,7 +28,7 @@ public class Tour {
     private BigDecimal price;
     @Enumerated(EnumType.STRING)
     private Status status;
-    @ManyToMany(mappedBy = "tours", cascade=CascadeType.ALL)
+    @ManyToMany(mappedBy = "tours", cascade = CascadeType.ALL)
     private List<Cart> carts;
 
 }
