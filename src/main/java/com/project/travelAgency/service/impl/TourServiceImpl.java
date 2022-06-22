@@ -2,9 +2,10 @@ package com.project.travelAgency.service.impl;
 
 import com.project.travelAgency.dto.CountryDto;
 import com.project.travelAgency.dto.TourDto;
-import com.project.travelAgency.dto.TypeOfTourDto;
-import com.project.travelAgency.model.entity.*;
-import com.project.travelAgency.model.mapper.TourMapper;
+import com.project.travelAgency.model.entity.Cart;
+import com.project.travelAgency.model.entity.Country;
+import com.project.travelAgency.model.entity.Tour;
+import com.project.travelAgency.model.entity.User;
 import com.project.travelAgency.model.repository.TourRepository;
 import com.project.travelAgency.service.CartService;
 import com.project.travelAgency.service.TourService;
@@ -20,11 +21,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TourServiceImpl implements TourService {
 
-
-    private final TourMapper mapper = TourMapper.MAPPER;
     private final TourRepository tourRepository;
     private final UserService userService;
     private final CartService cartService;
+
 
 
     @Override
@@ -32,7 +32,6 @@ public class TourServiceImpl implements TourService {
         return tourRepository.findAll().stream()
                 .map(TourDto::new)
                 .collect(Collectors.toList());
-//        return mapper.fromTourList(tourRepository.findAll()); // косяк с мапперами
     }
 
     @Override
@@ -58,10 +57,10 @@ public class TourServiceImpl implements TourService {
     }
 
     @Override
-    public Tour save(TourDto tourDto, TypeOfTourDto typeOfTourDto, CountryDto countryDto) {
+    public Tour save(TourDto tourDto,  CountryDto countryDto) {
 
         Tour tour = Tour.builder()
-                .typeOfTour(new TypeOfTour(typeOfTourDto))
+                .typeOfTour(tourDto.getTypeOfTour())
                 .country(new Country(countryDto))
                 .days(tourDto.getDays())
                 .price(tourDto.getPrice())
@@ -71,6 +70,5 @@ public class TourServiceImpl implements TourService {
         tourRepository.save(tour);
         return tour;
     }
-
 }
 

@@ -15,9 +15,9 @@ public interface CartService {
 
     CartDto deleteTourByUser(String name, Long id);
 
-    Cart getById(Long id);
-
     void save(Cart cart);
 
     CartDto getCartByUser(String name);// поиск корзины по user
+
+    void commitCartToOrder(String username);
 }

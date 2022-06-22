@@ -15,6 +15,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class CartDetailDto {
+
+    private Long id;
     private TypeOfTour typeOfTour;
     private Country country;
     private Integer days;
@@ -23,6 +25,7 @@ public class CartDetailDto {
     private Double sum;
 
     public CartDetailDto(Tour tour) {
+        this.id = tour.getId();
         this.typeOfTour = tour.getTypeOfTour();
         this.country = tour.getCountry();
         this.days = tour.getDays();

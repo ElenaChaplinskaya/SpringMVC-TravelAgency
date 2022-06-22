@@ -2,8 +2,6 @@ package com.project.travelAgency.service;
 
 import com.project.travelAgency.dto.CountryDto;
 import com.project.travelAgency.dto.TourDto;
-import com.project.travelAgency.dto.TypeOfTourDto;
-import com.project.travelAgency.model.entity.Status;
 import com.project.travelAgency.model.entity.Tour;
 
 import java.util.List;
@@ -16,6 +14,6 @@ public interface TourService {
 
     Tour getById(long id);
 
-    Tour save(TourDto tourDto, TypeOfTourDto typeOfTourDto, CountryDto countryDto);
+    Tour save(TourDto tourDto,  CountryDto countryDto);
 
 }

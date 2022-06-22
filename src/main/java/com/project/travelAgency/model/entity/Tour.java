@@ -18,10 +18,7 @@ public class Tour {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
-    private Type type;
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name="type_of_tour_id")
-//    private TypeOfTour typeOfTour;
+    private TypeOfTour typeOfTour;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="country_id")
     private Country country;

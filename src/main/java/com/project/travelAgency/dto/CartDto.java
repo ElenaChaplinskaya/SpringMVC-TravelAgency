@@ -15,7 +15,6 @@ import java.util.List;
 public class CartDto {
 
     private Long id;
-
     private  int amountTours;
     private Double sum;
     private List<CartDetailDto> cartDetails = new ArrayList<>();

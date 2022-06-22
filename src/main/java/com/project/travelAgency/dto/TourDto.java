@@ -3,6 +3,7 @@ package com.project.travelAgency.dto;
 
 import com.project.travelAgency.model.entity.Status;
 import com.project.travelAgency.model.entity.Tour;
+import com.project.travelAgency.model.entity.TypeOfTour;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,7 @@ import java.math.BigDecimal;
 public class TourDto {
 
     private Long id;
-    private TypeOfTourDto typeOfTourDto;
+    private TypeOfTour typeOfTour;
     private CountryDto countryDto;
     private int days;
     private BigDecimal price;
@@ -26,7 +27,7 @@ public class TourDto {
 
     public TourDto(Tour tour) {
         this.id = tour.getId();
-        this.typeOfTourDto = new TypeOfTourDto(tour.getTypeOfTour());
+        this.typeOfTour = tour.getTypeOfTour();
         this.countryDto = new CountryDto(tour.getCountry());
         this.days = tour.getDays();
         this.price = tour.getPrice();

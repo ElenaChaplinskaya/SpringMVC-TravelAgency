@@ -2,6 +2,7 @@ package com.project.travelAgency.service.impl;
 
 
 import com.project.travelAgency.dto.UserDto;
+import com.project.travelAgency.model.entity.Order;
 import com.project.travelAgency.model.entity.Role;
 import com.project.travelAgency.model.entity.User;
 import com.project.travelAgency.model.repository.UserRepository;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -60,6 +62,28 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByName(String name) {
         return userRepository.findFirstByName(name);
+    }
+
+    @Override
+    public User getDiscount(String name) {
+        User user = userRepository.findFirstByName(name);
+
+        List<Order> orders = user.getOrders();
+        BigDecimal newSum = orders.stream().map(Order::getSum).reduce(BigDecimal.valueOf(0), BigDecimal::add);
+
+        if (newSum.compareTo(new BigDecimal(1000)) >= 0 && newSum.compareTo(new BigDecimal(2000)) <= 0) {
+            user.setDiscount(BigDecimal.valueOf(5));
+            if (newSum.compareTo(new BigDecimal(2000)) >= 0 && newSum.compareTo(new BigDecimal(3000)) <= 0) {
+                user.setDiscount(BigDecimal.valueOf(10));
+                if (newSum.compareTo(new BigDecimal(3000)) >= 0 && newSum.compareTo(new BigDecimal(4000)) <= 0) {
+                    user.setDiscount(BigDecimal.valueOf(15));
+                } else {
+                    user.setDiscount(BigDecimal.valueOf(20));
+                }
+            }
+        }
+
+      return   userRepository.save(user);
     }
 
     @Override

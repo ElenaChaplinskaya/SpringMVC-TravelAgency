@@ -2,13 +2,9 @@ package com.project.travelAgency.controller;
 
 import com.project.travelAgency.dto.CountryDto;
 import com.project.travelAgency.dto.TourDto;
-import com.project.travelAgency.dto.TypeOfTourDto;
 import com.project.travelAgency.model.entity.Country;
-import com.project.travelAgency.model.entity.Status;
 import com.project.travelAgency.model.entity.Tour;
-import com.project.travelAgency.model.entity.TypeOfTour;
 import com.project.travelAgency.model.repository.TourRepository;
-import com.project.travelAgency.service.TypeOfTourService;
 import com.project.travelAgency.service.impl.TourServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -26,9 +22,6 @@ public class TourController {
 
     private final TourServiceImpl tourService;
     private final TourRepository tourRepository;
-
-    private final TypeOfTourService typeOfTourService;
-
 
     @GetMapping
     public String list(Model model) {
@@ -49,7 +42,6 @@ public class TourController {
     @GetMapping("/showCreateTour")
     public String showCreateTour(Model model) {
 
-        model.addAttribute("typeOfTour", new TypeOfTourDto());
         model.addAttribute("country", new CountryDto());
         model.addAttribute("tour", new TourDto());
         return "createTour";
@@ -57,14 +49,13 @@ public class TourController {
 
     @PostMapping("/createTour")
     public String createTour(@ModelAttribute TourDto tourDto,
-                             @ModelAttribute TypeOfTourDto typeOfTourDto,
                              @ModelAttribute CountryDto countryDto,
                              BindingResult bindingResult,
                              Model model) {
         if (bindingResult.hasErrors()) {
             return "tours";
         }
-        tourService.save(tourDto, typeOfTourDto, countryDto);
+        tourService.save(tourDto, countryDto);
         List<TourDto> list = tourService.getAll();
         model.addAttribute("tours", list);
         return "tours";
@@ -89,8 +80,8 @@ public class TourController {
     }
 
     @PostMapping("/editTour")
-    public String editTour(@ModelAttribute Tour tour, @ModelAttribute TypeOfTour typeOfTour, @ModelAttribute Country country, Model model) {
-        model.addAttribute("typeOfTour", new TypeOfTour());
+    public String editTour(@ModelAttribute Tour tour,  @ModelAttribute Country country, Model model) {
+
         model.addAttribute("country", new Country());
         tourRepository.save(tour);
         List<TourDto> list = tourService.getAll();

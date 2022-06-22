@@ -1,6 +1,7 @@
 package com.project.travelAgency.controller;
 
 import com.project.travelAgency.dto.UserDto;
+import com.project.travelAgency.model.entity.User;
 import com.project.travelAgency.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -37,4 +38,6 @@ public class UserController {
         }
         return "user";
     }
+
+
 }

@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -24,10 +26,12 @@ public class User {
     private String password;
     @Column
     private String email;
+    @Column
+    private BigDecimal discount;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE) //когда удаляем пользователя, удаляется его корзина
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
     private Cart cart;
-
-
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
 }

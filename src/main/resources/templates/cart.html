@@ -11,8 +11,10 @@
 
 <table border="1" align="center">
     <tr>
+        <td>Id</td>
         <td>Type of tour</td>
         <td>Country</td>
+        <td>City</td>
         <td>Duration</td>
         <td>Price</td>
         <td>Amount</td>
@@ -20,13 +22,15 @@
         <td>Delete tour</td>
     </tr>
     <tr th:each="detail : ${cart.cartDetails}">
+        <td th:text="${detail.id}">Id</td>
         <td th:text="${detail.typeOfTour}">Vacation</td>
-        <td th:text="${detail.country}">Italy</td>
+        <td th:text="${detail.country.country}">Italy</td>
+        <td th:text="${detail.country.city}">Italy</td>
         <td th:text="${detail.days}">7</td>
         <td th:text="${detail.price}">100</td>
         <td th:text="${detail.amount}">1</td>
         <td th:text="${detail.sum}">100</td>
-        <td><a th:href="@{/cart/deleteTourFromCart}">Remove</a></td>
+        <td><a th:href="@{/cart/{id}/deleteTourFromCart(id=${detail.id})}">Remove</a></td>
     </tr>
 </table>
 

@@ -3,12 +3,11 @@ package com.project.travelAgency.service.impl;
 
 import com.project.travelAgency.dto.CartDetailDto;
 import com.project.travelAgency.dto.CartDto;
-import com.project.travelAgency.model.entity.Cart;
-import com.project.travelAgency.model.entity.Tour;
-import com.project.travelAgency.model.entity.User;
+import com.project.travelAgency.model.entity.*;
 import com.project.travelAgency.model.repository.CartRepository;
 import com.project.travelAgency.model.repository.TourRepository;
 import com.project.travelAgency.service.CartService;
+import com.project.travelAgency.service.OrderService;
 import com.project.travelAgency.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +23,7 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final TourRepository tourRepository;
     private final UserService userService;
+    private final OrderService orderService;
 
 
     @Override
@@ -51,11 +51,6 @@ public class CartServiceImpl implements CartService {
         cart.setTours(newTourList);
         cartRepository.save(cart);
 
-    }
-
-    @Override
-    public Cart getById(Long id) {
-        return cartRepository.getById(id);
     }
 
     @Override
@@ -97,8 +92,9 @@ public class CartServiceImpl implements CartService {
         cart.getTours().remove(tour);
         Cart savedCart = cartRepository.save(cart);
         CartDto cardDto = new CartDto();
+        User user = userService.findByName(name);
         Map<Long, CartDetailDto> mapByTourId = new HashMap<>();
-        List<Tour> tours = savedCart.getTours();
+        List<Tour> tours = user.getCart().getTours();
         for (Tour t : tours) {
             CartDetailDto detail = mapByTourId.get(tour.getId());
             if (detail == null) {
@@ -116,4 +112,40 @@ public class CartServiceImpl implements CartService {
 
     }
 
+    @Override
+    public void commitCartToOrder(String username) {
+        User user = userService.findByName(username);
+        if (user == null) {
+            throw new RuntimeException("User is not found");
+        }
+        Cart cart = user.getCart();
+        if (cart == null || cart.getTours().isEmpty()) {
+            return;
+        }
+
+
+        Order order = new Order();
+        order.setStatus(OrderStatus.NEW);
+        order.setUser(user);
+
+        Map<Tour, Long> tourWithAmount = cart.getTours().stream()
+                .collect(Collectors.groupingBy(tour -> tour, Collectors.counting()));
+
+        List<OrderDetails> orderDetails = tourWithAmount.entrySet().stream()
+                .map(pair -> new OrderDetails(order, pair.getKey(), pair.getValue(), pair.getValue()))
+                .collect(Collectors.toList());
+
+        BigDecimal total = new BigDecimal(orderDetails.stream()
+                .map(detail -> detail.getPrice().multiply(detail.getAmount()))
+                .mapToDouble(BigDecimal::doubleValue).sum());
+
+        order.setDetails(orderDetails);
+        order.setSum(total);
+
+        orderService.saveOrder(order);
+        cart.getTours().clear();
+        cartRepository.save(cart);
+    }
 }
+
+

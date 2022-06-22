@@ -21,7 +21,7 @@
         <td sec:authorize="hasAnyAuthority('ADMIN')">Edit tour</td>
     </tr>
     <tr th:each="tour : ${tours}">
-        <td th:text="${tour.typeOfTourDto.title}">Vacation</td>
+        <td th:text="${tour.typeOfTour}">Vacation</td>
         <td th:text="${tour.countryDto.country}">Italy</td>
         <td th:text="${tour.countryDto.city}">Milan</td>
         <td th:text="${tour.days}">10</td>

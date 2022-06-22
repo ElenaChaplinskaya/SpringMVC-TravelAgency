@@ -1,10 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Order</title>
 </head>
 <body>
-
+<div th:insert="~{fragments/menu :: #nav-menu}"></div>
+    <table border="1" align="center">
+        <tr>
+            <td>Date</td>
+            <td>Status</td>
+            <td>Sum</td>
+            <td>Discount, %</td>
+            <td>SubTotal</td>
+            <td>Make a payment</td>
+        </tr>
+            <tr th:each="order : ${orders}">
+            <td th:text="${order.created}">Date</td>
+            <td th:text="${order.status}">Status</td>
+            <td th:text="${order.sum}">Sum</td>
+            <td th:text="${order.user.discount}">Discount</td>
+            <th:block th:with=" var = ${order.sum-(order.sum * order.user.discount/100)}">
+                <td th:text="${var}">SubTotal</td>
+            </th:block>
+            <td> <a th:href="@{/payment}">Payment</a></td>
+        </tr>
+    </table>
 </body>
 </html>

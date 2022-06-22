@@ -13,16 +13,19 @@
     <table border="1">
         <tr>
             <td>Type of tour</td>
-            <td><input type="text"  th:value="${typeOfTour.id}" id="id" name="id"></td>
-            <td><input type="text"  th:value="${typeOfTour.title}" id="title" name="title"></td>
+            <td>
+                <select name="typeOfTour" id="typeOfTour">
+                    <option th:each="typeOfTour:${T(com.project.travelAgency.model.entity.TypeOfTour).values()}"
+                            th:valus ="${typeOfTour}" th:text="${typeOfTour}"></option>
+                </select>
+            </td>
         </tr>
-        <tr>
             <td>Country</td>
-            <td><input type="text"  th:value="${country.country}" id="country" name="country"></td>
+            <td><input type="text" th:value="${country.country}" id="country" name="country"></td>
         </tr>
         <tr>
             <td>City</td>
-            <td><input type="text"  th:value="${country.city}" id="city" name="city"></td>
+            <td><input type="text" th:value="${country.city}" id="city" name="city"></td>
         </tr>
         <tr>
             <td>During</td>
