@@ -9,7 +9,13 @@
 There should be integration with the payment system
 
 
-<form th:action="@{/payment}" method="post">
+<form th:action="@{/payment/{id}(id=${order.id})}" modelAttribute="order" th:object="${order}" method="post">
+    <tr th:each="order : ${order}">
+        <td><input type="hidden" th:field="*{id}"  id="id" placeholder="Id"></td>
+        <td><input type="hidden" th:field="*{sum}"  id="sum" placeholder="Sum"></td>
+        <td><input type="hidden" th:field="*{user.id}"  id="user_id" placeholder="User_id"></td>
+        <td><input type="hidden" th:field="*{created}"  id="created" placeholder="Created"></td>
+        <td><input type="hidden" th:field="*{status}"  id="status" placeholder="Status"></td>
     <button type="submit">Make a pay</button>
 </form>
 </body>

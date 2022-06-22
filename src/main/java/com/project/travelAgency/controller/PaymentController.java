@@ -7,37 +7,30 @@ import com.project.travelAgency.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.security.Principal;
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/payment")
+@RequestMapping("/payment/{id}")
 public class PaymentController {
 
     private final OrderRepository orderRepository;
     private final OrderService orderService;
 
     @GetMapping
-    public String makeAPayment(Model model) {
+    public String makeAPayment(@PathVariable Long id, Model model) {
+        model.addAttribute("order", orderRepository.findById(id).get());
+        orderRepository.findById(id).get();
 
         return "payment";
     }
 
     @PostMapping
-    public String makeAPayment(Principal principal) {
+    public String makeAPayment(@ModelAttribute Order order) {
 
-        List<Order> orders = orderRepository.findAllByUserName(principal.getName());
-        for (Order order : orders) {
-            if (order.getStatus() == OrderStatus.NEW) {
-                order.setStatus(OrderStatus.PAID);
-                orderService.saveOrder(order);
-            }
-        }
+        order.setStatus(OrderStatus.PAID);
+        orderService.saveOrder(order);
+
         return "redirect:/order";
     }
 }

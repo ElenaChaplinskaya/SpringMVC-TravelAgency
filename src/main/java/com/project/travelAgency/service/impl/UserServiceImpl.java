@@ -70,18 +70,23 @@ public class UserServiceImpl implements UserService {
         List<Order> orders = user.getOrders();
         BigDecimal newSum = orders.stream().map(Order::getSum).reduce(BigDecimal.valueOf(0), BigDecimal::add);
 
+        if (newSum.compareTo(new BigDecimal(1000)) <= 0) {
+            user.setDiscount(BigDecimal.valueOf(0));
+        }
         if (newSum.compareTo(new BigDecimal(1000)) >= 0 && newSum.compareTo(new BigDecimal(2000)) <= 0) {
             user.setDiscount(BigDecimal.valueOf(5));
-            if (newSum.compareTo(new BigDecimal(2000)) >= 0 && newSum.compareTo(new BigDecimal(3000)) <= 0) {
-                user.setDiscount(BigDecimal.valueOf(10));
-                if (newSum.compareTo(new BigDecimal(3000)) >= 0 && newSum.compareTo(new BigDecimal(4000)) <= 0) {
-                    user.setDiscount(BigDecimal.valueOf(15));
-                } else {
-                    user.setDiscount(BigDecimal.valueOf(20));
-                }
-            }
         }
-
+        if (newSum.compareTo(new BigDecimal(2000)) >= 0 && newSum.compareTo(new BigDecimal(3000)) <= 0) {
+            user.setDiscount(BigDecimal.valueOf(10));
+        }
+        if (newSum.compareTo(new BigDecimal(3000)) >= 0 && newSum.compareTo(new BigDecimal(4000)) <= 0) {
+            user.setDiscount(BigDecimal.valueOf(15));
+        }
+        if (newSum.compareTo(new BigDecimal(4000)) >= 0) {
+            user.setDiscount(BigDecimal.valueOf(20));
+        } else {
+            userRepository.save(user);
+        }
         return userRepository.save(user);
     }
 
