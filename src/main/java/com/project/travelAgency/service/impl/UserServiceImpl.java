@@ -1,6 +1,5 @@
 package com.project.travelAgency.service.impl;
 
-
 import com.project.travelAgency.dto.UserDto;
 import com.project.travelAgency.model.entity.Order;
 import com.project.travelAgency.model.entity.Role;
@@ -8,6 +7,7 @@ import com.project.travelAgency.model.entity.User;
 import com.project.travelAgency.model.repository.UserRepository;
 import com.project.travelAgency.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.log4j.Logger;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,12 +26,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+
+    final static Logger logger = Logger.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
 
     @Override
     public boolean save(UserDto userDto) {
+
+        logger.info("Conversion UserDto in User and then save User");
+
         if (!Objects.equals(userDto.getPassword(), userDto.getMatchingPassword())) {
             throw new RuntimeException("Password is not equal");
         }
@@ -50,9 +55,11 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-    //находим всех пользователей в БД и маппим их в DTO, выводим список.
     @Override
     public List<UserDto> getAll() {
+
+        logger.info("Conversion UserList in UserDtoList");
+
         return userRepository.findAll().stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
@@ -65,6 +72,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getDiscount(String name) {
+
+        logger.info("Get a discount for user");
+
         User user = userRepository.findFirstByName(name);
 
         List<Order> orders = user.getOrders();
@@ -85,29 +95,34 @@ public class UserServiceImpl implements UserService {
         if (newSum.compareTo(new BigDecimal(4000)) >= 0) {
             user.setDiscount(BigDecimal.valueOf(20));
         } else {
+
+            logger.info("Save User with discount");
             userRepository.save(user);
         }
+        logger.info("Save User with discount");
         return userRepository.save(user);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException { //ищем пользователя в БД
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findFirstByName(username);
         if (user == null) {
-            throw new UsernameNotFoundException("User not found with name: " + username); // если не нашли пользователя
+            throw new UsernameNotFoundException("User not found with name: " + username);
         }
 
-        List<GrantedAuthority> roles = new ArrayList<>(); //если нашли, создаем лист ролей
-        roles.add(new SimpleGrantedAuthority(user.getRole().name())); // добавляем роль юзера в лист
+        List<GrantedAuthority> roles = new ArrayList<>();
+        roles.add(new SimpleGrantedAuthority(user.getRole().name()));
 
-        return new org.springframework.security.core.userdetails.User( //собираем СПРИНГОВСКОГО юзера, ЮЗЕР КОТОРОГО ПОНИМАЕТ USERdETAIL собираем его их данных полученных в бд
+        return new org.springframework.security.core.userdetails.User(
                 user.getName(),
                 user.getPassword(),
                 roles);
     }
 
-    //конвертация User из БД в UserDto
     private UserDto toDto(User user) {
+
+        logger.info("Conversion User to UserDto");
+
         return UserDto.builder()
                 .username(user.getName())
                 .email(user.getEmail())

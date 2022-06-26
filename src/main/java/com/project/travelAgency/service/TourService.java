@@ -14,6 +14,6 @@ public interface TourService {
 
     Tour getById(long id);
 
-    Tour save(TourDto tourDto, CountryDto countryDto);
+    boolean save(TourDto tourDto, CountryDto countryDto);
 
 }

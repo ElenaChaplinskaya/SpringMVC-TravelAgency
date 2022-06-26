@@ -6,12 +6,15 @@ import com.project.travelAgency.model.entity.Country;
 import com.project.travelAgency.model.entity.Tour;
 import com.project.travelAgency.model.repository.TourRepository;
 import com.project.travelAgency.service.impl.TourServiceImpl;
+import com.project.travelAgency.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -20,6 +23,7 @@ import java.util.List;
 @RequestMapping("/tours")
 public class TourController {
 
+    final static Logger logger = Logger.getLogger(TourController.class);
     private final TourServiceImpl tourService;
     private final TourRepository tourRepository;
 
@@ -41,19 +45,19 @@ public class TourController {
 
     @GetMapping("/showCreateTour")
     public String showCreateTour(Model model) {
-
+        logger.info("Create a new Tour");
         model.addAttribute("country", new CountryDto());
         model.addAttribute("tour", new TourDto());
         return "createTour";
     }
 
     @PostMapping("/createTour")
-    public String createTour(@ModelAttribute TourDto tourDto,
-                             @ModelAttribute CountryDto countryDto,
-                             BindingResult bindingResult,
+    public String createTour(@Valid @ModelAttribute  TourDto tourDto,BindingResult result,
+                             @ModelAttribute CountryDto countryDto, BindingResult result1,
                              Model model) {
-        if (bindingResult.hasErrors()) {
-            return "tours";
+        logger.info("Save a new Tour");
+        if (result.hasErrors()|| result1.hasErrors()) {
+            return "tourError";
         }
         tourService.save(tourDto, countryDto);
         List<TourDto> list = tourService.getAll();
@@ -63,7 +67,7 @@ public class TourController {
 
     @GetMapping("/{id}/deleteTour")
     public String deleteTour(@PathVariable Long id, Model model) {
-
+        logger.info("Delete Tour");
         tourRepository.deleteById(id);
         List<TourDto> list = tourService.getAll();
         List<TourDto> newList = tourService.getAll();
@@ -73,15 +77,15 @@ public class TourController {
 
     @GetMapping("/{id}")
     public String editTour(@PathVariable Long id, Model model) {
-
+        logger.info("Edit Tour");
         model.addAttribute("tour", tourService.getById(id));
         return "editTour";
 
     }
 
     @PostMapping("/editTour")
-    public String editTour(@ModelAttribute Tour tour,  @ModelAttribute Country country, Model model) {
-
+    public String editTour(@ModelAttribute Tour tour, @ModelAttribute Country country, Model model) {
+        logger.info("Save changed Tour");
         model.addAttribute("country", new Country());
         tourRepository.save(tour);
         List<TourDto> list = tourService.getAll();

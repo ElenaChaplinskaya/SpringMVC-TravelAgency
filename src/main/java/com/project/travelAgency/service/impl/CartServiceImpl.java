@@ -10,6 +10,7 @@ import com.project.travelAgency.service.CartService;
 import com.project.travelAgency.service.OrderService;
 import com.project.travelAgency.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
+    final static Logger logger = Logger.getLogger(CartServiceImpl.class);
     private final CartRepository cartRepository;
     private final TourRepository tourRepository;
     private final UserService userService;
@@ -27,24 +29,31 @@ public class CartServiceImpl implements CartService {
 
 
     @Override
-    public Cart createCart(User user, List<Long> tourIds) { //метод отработает, когда нужно будет добавлять туры в корзину
-        Cart cart = new Cart(); //создает новую корзину
-        cart.setUser(user); // сеттим юзера в корзину
-        List<Tour> tourList = getCollectRefToursByIds(tourIds); //у нас есть список туров, который лежит в определенной корзине определенного пользователя
+    public Cart createCart(User user, List<Long> tourIds) {
+
+        logger.info("Create Cart for User");
+        Cart cart = new Cart();
+        cart.setUser(user);
+        List<Tour> tourList = getCollectRefToursByIds(tourIds);
+        logger.info("Add tours_ids in Cart and save User`s Cart in DB");
         cart.setTours(tourList);
         return cartRepository.save(cart);
     }
 
-    //getOne берет ссылку на объект, findById- берет сам объект
     private List<Tour> getCollectRefToursByIds(List<Long> tourIds) {
+
+        logger.info("Get IdList from Tours");
+
         return tourIds.stream()
                 .map(tourRepository::getOne)
                 .collect(Collectors.toList());
     }
 
-    //туры мы берем по id
     @Override
     public void addTours(Cart cart, List<Long> tourIds) {
+
+        logger.info("Add tours in Cart");
+
         List<Tour> tours = cart.getTours();
         List<Tour> newTourList = tours == null ? new ArrayList<>() : new ArrayList<>(tours);
         newTourList.addAll(getCollectRefToursByIds(tourIds));
@@ -60,17 +69,18 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartDto getCartByUser(String name) {
-        User user = userService.findByName(name); // берем юзера из БД
-        if (user == null || user.getCart() == null) { // если нет юзера или нет юзера с определ корзиной
-            return new CartDto(); // возвращаем новую корзину ДТО
+        logger.info("Create CartDto for User");
+        User user = userService.findByName(name);
+        if (user == null || user.getCart() == null) {
+            return new CartDto();
         }
 
-        CartDto cardDto = new CartDto();  // создаем новую корзину ДТО
-        Map<Long, CartDetailDto> mapByTourId = new HashMap<>();// создаем список туров где по id тура у нас есть определенное описание тура
+        CartDto cardDto = new CartDto();
+        Map<Long, CartDetailDto> mapByTourId = new HashMap<>();
 
-        List<Tour> tours = user.getCart().getTours(); // создаем список туров у определенного юзера
+        List<Tour> tours = user.getCart().getTours();
         for (Tour tour : tours) {
-            CartDetailDto detail = mapByTourId.get(tour.getId());  // detail это тур по id c описанием
+            CartDetailDto detail = mapByTourId.get(tour.getId());
             if (detail == null) {
                 mapByTourId.put(tour.getId(), new CartDetailDto(tour));
             } else {
@@ -78,7 +88,8 @@ public class CartServiceImpl implements CartService {
                 detail.setSum(detail.getSum() + Double.valueOf(tour.getPrice().toString()));
             }
         }
-
+        logger.info("Calculate cost of tours");
+        logger.info("Set CartDetailsDto in CartDto");
         cardDto.setCartDetails(new ArrayList<>(mapByTourId.values()));
         cardDto.aggregate();
 
@@ -87,6 +98,9 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartDto deleteTourByUser(String name, Long tourId) {
+
+        logger.info("Delete tour from User`s Cart");
+
         Cart cart = cartRepository.findByUserName(name);
         Tour tour = cart.getTours().stream().filter(t -> tourId.equals(t.getId())).findFirst().orElseThrow(NoSuchElementException::new);
         cart.getTours().remove(tour);
@@ -114,6 +128,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void commitCartToOrder(String username) {
+        logger.info("Create Order");
         User user = userService.findByName(username);
         if (user == null) {
             throw new RuntimeException("User is not found");
@@ -138,10 +153,12 @@ public class CartServiceImpl implements CartService {
                 .map(detail -> detail.getPrice().multiply(detail.getAmount()))
                 .mapToDouble(BigDecimal::doubleValue).sum());
 
+        logger.info("Set OrderDetails in Order, save Order in DB");
         order.setDetails(orderDetails);
         order.setSum(total);
 
         orderService.saveOrder(order);
+        logger.info("Clear the User`s Cart");
         cart.getTours().clear();
         cartRepository.save(cart);
     }

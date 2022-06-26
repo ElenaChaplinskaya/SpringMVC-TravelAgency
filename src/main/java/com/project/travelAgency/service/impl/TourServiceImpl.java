@@ -11,6 +11,7 @@ import com.project.travelAgency.service.CartService;
 import com.project.travelAgency.service.TourService;
 import com.project.travelAgency.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TourServiceImpl implements TourService {
 
+    final static Logger logger = Logger.getLogger(TourServiceImpl.class);
     private final TourRepository tourRepository;
     private final UserService userService;
     private final CartService cartService;
@@ -29,6 +31,7 @@ public class TourServiceImpl implements TourService {
 
     @Override
     public List<TourDto> getAll() {
+        logger.info("Get TourDtoList");
         return tourRepository.findAll().stream()
                 .map(TourDto::new)
                 .collect(Collectors.toList());
@@ -36,11 +39,13 @@ public class TourServiceImpl implements TourService {
 
     @Override
     public void addToUserCart(Long tourId, String username) {
+        logger.info("Find User by name");
         User user = userService.findByName(username);
         if (user == null) {
             throw new RuntimeException("User " + username + " not found");
         }
-        Cart cart = user.getCart(); // ищем заказ у юзера
+        logger.info("Get Cart for User");
+        Cart cart = user.getCart();
         if (cart == null) {
             Cart newCart = cartService.createCart(user, Collections.singletonList(tourId));
             user.setCart(newCart);
@@ -57,8 +62,9 @@ public class TourServiceImpl implements TourService {
     }
 
     @Override
-    public Tour save(TourDto tourDto,  CountryDto countryDto) {
+    public boolean save(TourDto tourDto, CountryDto countryDto) {
 
+        logger.info("Conversion TourDto into Tour and save TOur in DB");
         Tour tour = Tour.builder()
                 .typeOfTour(tourDto.getTypeOfTour())
                 .country(new Country(countryDto))
@@ -68,7 +74,8 @@ public class TourServiceImpl implements TourService {
                 .build();
 
         tourRepository.save(tour);
-        return tour;
+      //  return tour;
+        return true;
     }
 }
 

@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface UserService extends UserDetailsService {
 
-    boolean save(UserDto userDTO); //принимает дтошку и сохраняем
+    boolean save(UserDto userDTO);
 
-    void save(User user);// для сохранения юзера к определенно корзине, когда будет добавлять туры в корзину
+    void save(User user);
 
     List<UserDto> getAll();
 
