@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @Builder
 public class CountryDto {
-    private Integer id;
+  //  private Integer id;
 
     @NotBlank(message = "Field Country should not be empty ")
     private String country;

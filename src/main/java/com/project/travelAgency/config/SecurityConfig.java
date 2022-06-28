@@ -36,14 +36,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return auth;
     }
 
-
-    // метод определяет какой урл нужно защищать, какой не нужно
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/users", "/tours/showCreateTour").hasAnyAuthority(Role.ADMIN.name())// просматривать пользователй могут только пользователи с правами ADMIN
-                .antMatchers("/users/new", "/deleteTour", "/editTour").hasAuthority(Role.ADMIN.name()) //создавать пользователя могут только пользователи с правами ADMIN
-                .anyRequest().permitAll() //остальные запросы для всех
+                .antMatchers("/users", "/tours/showCreateTour").hasAnyAuthority(Role.ADMIN.name())
+                .antMatchers( "/users/new", "/deleteTour", "/editTour").hasAuthority(Role.ADMIN.name())
+                .antMatchers("/**/*.js","/**/*.css","/**/*.jpg").permitAll()
+                .anyRequest().permitAll()
                 .and()
                 .formLogin()// страницы логина и аутинтификации разрешены
                 .loginPage("/login")
@@ -51,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login-error")
                 .permitAll() //для всех
                 .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")) //разъединение
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/").deleteCookies("JSESSIONID") // если успешно, переходим в корень и удаляем куки
                 .invalidateHttpSession(true)
                 .and()

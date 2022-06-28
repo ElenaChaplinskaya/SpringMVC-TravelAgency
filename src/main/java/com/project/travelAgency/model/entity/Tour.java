@@ -30,5 +30,7 @@ public class Tour {
     private Status status;
     @ManyToMany(mappedBy = "tours", cascade = CascadeType.ALL)
     private List<Cart> carts;
+    @OneToMany(mappedBy = "tour",cascade = CascadeType.ALL)
+    private List<OrderDetails> orderDetailsList;
 
 }

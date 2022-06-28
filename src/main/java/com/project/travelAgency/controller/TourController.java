@@ -1,12 +1,10 @@
 package com.project.travelAgency.controller;
 
-import com.project.travelAgency.dto.CountryDto;
 import com.project.travelAgency.dto.TourDto;
 import com.project.travelAgency.model.entity.Country;
 import com.project.travelAgency.model.entity.Tour;
 import com.project.travelAgency.model.repository.TourRepository;
 import com.project.travelAgency.service.impl.TourServiceImpl;
-import com.project.travelAgency.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -46,20 +44,18 @@ public class TourController {
     @GetMapping("/showCreateTour")
     public String showCreateTour(Model model) {
         logger.info("Create a new Tour");
-        model.addAttribute("country", new CountryDto());
         model.addAttribute("tour", new TourDto());
         return "createTour";
     }
 
     @PostMapping("/createTour")
-    public String createTour(@Valid @ModelAttribute  TourDto tourDto,BindingResult result,
-                             @ModelAttribute CountryDto countryDto, BindingResult result1,
+    public String createTour(@Valid @ModelAttribute("tour") TourDto tourDto, BindingResult result,
                              Model model) {
         logger.info("Save a new Tour");
-        if (result.hasErrors()|| result1.hasErrors()) {
-            return "tourError";
+        if (result.hasErrors()) {
+            return "createTour";
         }
-        tourService.save(tourDto, countryDto);
+        tourService.save(tourDto);
         List<TourDto> list = tourService.getAll();
         model.addAttribute("tours", list);
         return "tours";

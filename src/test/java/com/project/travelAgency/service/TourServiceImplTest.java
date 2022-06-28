@@ -61,7 +61,7 @@ public class TourServiceImplTest {
                 .status(Status.HOT)
                 .build();
 
-        boolean result = tourService.save(tourDto, countryDto);
+        boolean result = tourService.save(tourDto);
 
         Assertions.assertTrue(result);
         Mockito.verify(tourRepository).save(Mockito.any());

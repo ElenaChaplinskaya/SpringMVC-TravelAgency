@@ -1,6 +1,5 @@
 package com.project.travelAgency.service.impl;
 
-import com.project.travelAgency.dto.CountryDto;
 import com.project.travelAgency.dto.TourDto;
 import com.project.travelAgency.model.entity.Cart;
 import com.project.travelAgency.model.entity.Country;
@@ -62,19 +61,18 @@ public class TourServiceImpl implements TourService {
     }
 
     @Override
-    public boolean save(TourDto tourDto, CountryDto countryDto) {
+    public boolean save(TourDto tourDto) {
 
         logger.info("Conversion TourDto into Tour and save TOur in DB");
         Tour tour = Tour.builder()
                 .typeOfTour(tourDto.getTypeOfTour())
-                .country(new Country(countryDto))
+                .country(new Country(tourDto.getCountryDto()))
                 .days(tourDto.getDays())
                 .price(tourDto.getPrice())
                 .status(tourDto.getStatus())
                 .build();
 
         tourRepository.save(tour);
-      //  return tour;
         return true;
     }
 }
