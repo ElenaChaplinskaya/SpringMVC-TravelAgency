@@ -15,7 +15,7 @@ public interface CartService {
 
     CartDto deleteTourByUser(String name, Long id);
 
-    void save(Cart cart);
+    boolean save(Cart cart);
 
     CartDto getCartByUser(String name);// поиск корзины по user
 

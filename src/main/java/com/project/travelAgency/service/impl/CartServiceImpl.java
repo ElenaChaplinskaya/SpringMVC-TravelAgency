@@ -40,10 +40,9 @@ public class CartServiceImpl implements CartService {
         return cartRepository.save(cart);
     }
 
-    private List<Tour> getCollectRefToursByIds(List<Long> tourIds) {
+    public List<Tour> getCollectRefToursByIds(List<Long> tourIds) {
 
         logger.info("Get IdList from Tours");
-
         return tourIds.stream()
                 .map(tourRepository::getOne)
                 .collect(Collectors.toList());
@@ -63,8 +62,9 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void save(Cart cart) {
+    public boolean save(Cart cart) {
         cartRepository.save(cart);
+        return true;
     }
 
     @Override
