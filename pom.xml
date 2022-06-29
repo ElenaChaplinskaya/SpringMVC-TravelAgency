@@ -89,7 +89,19 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>8.0.3</version>
+				<configuration>
+					<locations>
+						<location>filesystem:src/main/resources/flyway/migrations</location>
+					</locations>
+					<url>jdbc:mysql://localhost:3306/travelagency</url>
+					<user>root</user>
+					<password>1234</password>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
-
 </project>
