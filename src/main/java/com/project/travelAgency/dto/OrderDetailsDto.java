@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDetailsDto {
-
     private String tour;
     private Double price;
     private Double amount;

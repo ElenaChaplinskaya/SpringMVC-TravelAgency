@@ -102,9 +102,7 @@ public class UserServiceImplTest {
         Mockito.when(userRepository.findFirstByName(Mockito.anyString())).thenReturn(expectedUser);
 
         userService.getDiscount(expectedUser.getName());
-        Assertions.assertEquals(new BigDecimal(15), expectedUser.getDiscount());
-
-
+        Assertions.assertEquals(new BigDecimal(5), expectedUser.getDiscount());
     }
 }
 

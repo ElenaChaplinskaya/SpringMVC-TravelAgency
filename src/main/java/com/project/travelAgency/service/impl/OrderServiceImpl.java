@@ -15,8 +15,9 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 
     @Override
-    public Order saveOrder(Order order) {
+    public boolean saveOrder(Order order) {
         logger.info("Save User`s Order in DB");
-        return orderRepository.save(order);
+        orderRepository.save(order);
+        return true;
     }
 }

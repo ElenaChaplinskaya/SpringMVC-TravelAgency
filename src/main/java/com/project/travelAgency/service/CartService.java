@@ -17,7 +17,7 @@ public interface CartService {
 
     boolean save(Cart cart);
 
-    CartDto getCartByUser(String name);// поиск корзины по user
+    CartDto getCartByUser(String name);
 
     void commitCartToOrder(String username);
 }

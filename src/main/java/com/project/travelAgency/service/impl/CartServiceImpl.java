@@ -40,9 +40,10 @@ public class CartServiceImpl implements CartService {
         return cartRepository.save(cart);
     }
 
-    public List<Tour> getCollectRefToursByIds(List<Long> tourIds) {
+    private List<Tour> getCollectRefToursByIds(List<Long> tourIds) {
 
         logger.info("Get IdList from Tours");
+
         return tourIds.stream()
                 .map(tourRepository::getOne)
                 .collect(Collectors.toList());

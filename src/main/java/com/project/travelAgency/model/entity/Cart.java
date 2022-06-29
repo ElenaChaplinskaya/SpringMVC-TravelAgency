@@ -25,9 +25,4 @@ public class Cart {
             inverseJoinColumns = @JoinColumn(name = "tour_id"))
     private List<Tour> tours;
 
-    public void removeTour(Tour tempTour) {
-        tours.remove(tempTour);
-        tempTour.getCarts().remove(this);
-
-    }
 }
